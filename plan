@@ -1,0 +1,61 @@
+# The First web-page - Introduction
+This page will be an interactive webpage explaining about the dataset , our model , it's prediction accuracy and other metrics
+
+# Next page :
+Either we can use the side bar or we can use another webpage where user will be able to select one of the two input options from below.
+
+
+# The Input : 
+There are gonna be two ways the user can predict using this model
+1. Through explicitly providing his dataset which must have appropriate columns
+2. Another way is using the toggle_bar where the user can play with the toggle at once and then predict using the model by his own custom feature values.
+
+# Side-bar
+If the second option is clicked we will make sure that a new sidebar is load and user can input his own values
+Also we will use our own back button which will lead back to the two options sidebar
+
+# Page 1
+If the user clicks the 1 page then we will preprocess internally and display some info about the data beforehand
+This will contain info like head , dimensions, column and etc
+If the user fails to give us the requested features with the correct dtype then our system throws a error on that page
+Also we will then we have two options :
+    Either we can use train-test-split and then predict on the test
+    Or we can go with directally preprocessing the dataset and predict directally on the whole set 
+    (cause the 2 option is what happen in production I guess)
+
+After this model gives a prediction and we merge the predictions with the y if given and show actual vs predicted value
+If only X columns are given then we use X directly to predict using some preprocessing and then directly pass through the pipeline 
+(I think in production we have only X and we predict directally using some preprocessing and pipeline)
+
+Once we get the values we either can compare the model performance with actual y
+ or
+We can just give the predictions with previously extracted shap values , classification report , conf_matrix and roc_auc_curve.
+
+So in short our architecture for this depends on two things whether the y column will be present or not
+
+# NOTE: also we make sure to cache the pipeline while loading to reduce memory overhead
+
+# Page 2 
+
+This page will display the performance and the model prediction using the custom inputs from user 
+This wasy user can dynamically check for any user whether he churns or not
+
+# The file structure
+I keep on planning to decouple almost everything to make sure that everything remains clean
+for the main file 
+
+app.py ---> Decouple each component and import from a components folder
+
+engine ---> Run the main pipeline but the early preprocessing and the other steps are seperated
+This is to avoid data leak and for cleanliness
+
+Other folders are the basic streamlit and .yaml folder to set the theme , color scheme for the page.
+
+# Page 3
+Maybe we can add a summary page later to show the summary of findings 
+
+# Frontend
+I would like to keep it clean and clear
+Maybe a DARK theme , WHITE theme or a toggle button ?!?
+
+- Color scheme : to be decided
