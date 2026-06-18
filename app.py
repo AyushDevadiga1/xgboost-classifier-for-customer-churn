@@ -1,7 +1,7 @@
 import streamlit as st
 
 # File paths 
-intro_path = "frontend\\introduction-page.md"
+PATH_INTRO = "frontend\\main-page\\introduction-page.md"
 
 def main():
     st.set_page_config(
@@ -16,7 +16,7 @@ def main():
                                     }
                     )
     try :
-        with open(intro_path , 'r' , encoding = 'utf-8') as file:
+        with open(PATH_INTRO , 'r' , encoding = 'utf-8') as file:
             intro_markdown = file.read() 
 
         st.markdown(intro_markdown)
