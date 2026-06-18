@@ -24,5 +24,17 @@ def main():
     except Exception as e : 
         print(f'The introduction-page was not found .\n Cause : {e}')
 
+
+
+    st.sidebar.markdown("## Quick Guide ")
+
+    st.sidebar.markdown(
+        "🚦 **Where to navigate:**\n\n"
+        "• :green[**app**] — Introduction to churning and XGBoost Classifier.\n\n"
+        "• :orange[**model info**] — Model training and its performance evaluation."
+    )
+
+    st.sidebar.markdown("---") # Clean divider line
+
 if __name__ == '__main__':
     main()
