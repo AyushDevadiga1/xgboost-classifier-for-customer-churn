@@ -94,7 +94,9 @@ def main():
         st.write("### Feature Correlation Analysis")
         st.write(
             "The heat matrix illustrates the co-dependency between feature matrices. "
-            "Strong directional vectors are evident between tenure durations and aggregate billing sums."
+            "This was the status of the model when all the features were encoded , causing interdependence."
+            "To reduce this the xgboost_pipeline uses several methods like Target encoding ,  OneHot Encoding with dropping" \
+            " , dropping redundant columns and smart feature engineering ."
         )
         
         if Path(PATH_CORR_HEAT).exists():
