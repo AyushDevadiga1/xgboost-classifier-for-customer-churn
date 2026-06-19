@@ -31,7 +31,8 @@ def main():
     st.sidebar.markdown(
         "🚦 **Where to navigate:**\n\n"
         "• :green[**app**] — Introduction to churning and XGBoost Classifier.\n\n"
-        "• :orange[**model info**] — Model training and its performance evaluation."
+        "• :orange[**model info**] — Information about how model was trained and it's performance.\n\n"
+        "• :red[**make predictions**] — Make predictions with your custom dataset in this tab."
     )
 
     st.sidebar.markdown("---") # Clean divider line
