@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 from src.validator import validate_dataset
+from src.preprocessor import preprocess_data
 
 # Flags to change the page interface depending on differnent session states 
 
