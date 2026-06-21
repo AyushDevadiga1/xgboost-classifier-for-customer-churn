@@ -1,11 +1,21 @@
-# Prediction via Custom Dataset
+# Make Predictions on Your Own Data
 
-> ⚠️ **Important: Telco Dataset Upload Requirements**
-> 
-> * **Get the Reference:** Click the **"Download Sample CSV"** button below to download a small, correctly formatted slice of Telco data. Use this file as your exact structure reference.
-> * **Keep the Structure:** Do not rename, reorder, or alter any column headers provided in the sample.
-> * **Format & Data:** Your final dataset must be a `.csv` file. Ensure all data types and formats strictly match the sample to avoid automatic rejection.
-> * **Anonymise Data:** Remove or mask all personally identifiable information (PII), such as real phone numbers, names, and exact addresses, before uploading.
-> 
+Upload a CSV file and the app will predict churn risk for each customer. You can upload data with or without the actual outcome — both are supported.
 
+> **Before you upload:**
+>
+> - Download the sample CSV below to see the exact column structure expected.
+> - Keep the column names and order exactly as shown in the sample.
+> - The file must be a `.csv` with the same data types as the sample (numbers as numbers, text as text).
+> - Remove any personally identifiable information (names, phone numbers, addresses) before uploading.
+
+---
+
+## Two Ways to Use This
+
+**Inference mode** — upload customer data without a `Churn` column, and the app predicts churn risk for each row. This mirrors how the model would be used in production, where the actual outcome isn't known yet.
+
+**Evaluation mode** — upload data that includes the `Churn` column, and the app will additionally show how accurate the model's predictions were against the real outcomes, along with the full set of evaluation charts.
+
+The app detects which mode applies automatically based on whether a `Churn` column is present.
 
