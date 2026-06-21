@@ -2,7 +2,7 @@
 
 A production-style machine learning application that predicts telecom customer churn. The project covers the full pipeline: data cleaning, leak-aware preprocessing, model tuning, and a deployed interactive dashboard that automatically adapts based on whether ground-truth labels are available.
 
-**Live demo:** _[link placeholder — deployment pending]_
+**Live demo:** https://xgboost-classifier-for-customer-churn-ayush-devadiga.streamlit.app/
 
 ---
 
