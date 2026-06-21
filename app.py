@@ -1,7 +1,7 @@
 import streamlit as st
 
 # File paths 
-PATH_INTRO = "frontend\\main_page\\introduction-page.md"
+PATH_INTRO = "frontend/main_page/introduction-page.md"
 
 def main():
     st.set_page_config(

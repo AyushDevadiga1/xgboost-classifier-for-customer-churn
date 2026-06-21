@@ -3,7 +3,7 @@ import pandas as pd
 import joblib
 import streamlit as st
 
-PATH_PIPE = "models\\xgboost_model.joblib"
+PATH_PIPE = "models/xgboost_model.joblib"
 
 def preprocess_data(X):
     """Preprocesses user input features before model inference."""

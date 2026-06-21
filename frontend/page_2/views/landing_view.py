@@ -3,8 +3,8 @@ import pandas as pd
 from src.validator import validate_dataset
 
 # Keep paths relative to the project root directory
-PATH_INTRO = "frontend\\page_2\\introduction.md"
-PATH_SAMPLE = "frontend\\page_2\\data-sample.csv"
+PATH_INTRO = "frontend/page_2/introduction.md"
+PATH_SAMPLE = "frontend/page_2/data-sample.csv"
 
 def render_landing_page():
     """Handles home page asset delivery, user uploads, and template verification."""
