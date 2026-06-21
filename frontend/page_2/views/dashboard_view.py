@@ -84,7 +84,7 @@ def render_dashboard_page(pipeline):
             prob_df = pd.DataFrame({"Probability": probabilities, "Actual Churn State": df["Churn"].to_numpy()})
             fig_prob = px.histogram(
                 prob_df, x="Probability", color="Actual Churn State", nbins=30, 
-                barmode="overlay", marginal="box", color_discrete_sequence=["#1f77b4", "#ff7f0e"]
+                barmode="overlay", marginal="box", color_discrete_sequence=["#197bc1", "#f18322"]
             )
             fig_prob.update_layout(margin=dict(l=40, r=40, t=40, b=40), height=450, xaxis_title="Predicted Probability Score", yaxis_title="Customer Segment Count")
             st.plotly_chart(fig_prob, use_container_width=True, key="eval_confidence")
@@ -112,7 +112,7 @@ def render_dashboard_page(pipeline):
         if feat_df is not None:
             fig_feat = px.bar(
                 feat_df.head(10), x="Importance", y="Feature", orientation="h",
-                color="Importance", color_continuous_scale="Blues", text_auto=".2f"
+                color="Importance", color_continuous_scale="blugrn", text_auto=".2f"
             )
             fig_feat.update_layout(height=450, yaxis={'categoryorder':'total ascending'}, coloraxis_showscale=False, margin=dict(l=150, r=40, t=30, b=40))
             st.plotly_chart(fig_feat, use_container_width=True, key="feature_importance_plot")
@@ -120,6 +120,7 @@ def render_dashboard_page(pipeline):
             st.info("Feature importance metrics are unavailable for this model pipeline configuration.")
             
     if has_target:
+
         with tab5:
             trend_tn = pd.DataFrame({"Tenure": X_raw["tenure"], "Actual": y, "Predicted": predictions}).groupby("Tenure").mean().reset_index()
             fig_tn = px.line(trend_tn, x="Tenure", y=["Actual", "Predicted"], color_discrete_sequence=["#1f77b4", "#ff7f0e"])
@@ -136,27 +137,32 @@ def render_dashboard_page(pipeline):
             with st.spinner("Analyzing feature contributions..."):
                 importance_df = get_shap_importance_df(pipeline, X_pipeline_fully_encoded)
             
-            # 3. Apply Seaborn styling themes
-            sns.set_theme(style="whitegrid")
-            fig, ax = plt.subplots(figsize=(10, 6))
-            
-            # 4. Generate a clean horizontal Seaborn barplot
-            sns.barplot(
-                data=importance_df.head(15), # Limits display to top 15 features for readability
-                x="SHAP Importance",
-                y="Feature",
-                palette="viridis", # A beautiful modern gradient palette
-                ax=ax
-            )
-            
-            # Clean up labels and remove unnecessary borders
-            ax.set_title("Top 15 Features Driving Model Decisions", fontsize=14, pad=15)
-            ax.set_xlabel("Mean Absolute SHAP Value (Impact on Prediction)", fontsize=11)
-            ax.set_ylabel("")
-            sns.despine(left=True, bottom=True)
-            
-            # 5. Render the Seaborn chart inside your Streamlit container
-            st.pyplot(fig, clear_figure=True)
+            if importance_df is not None and not importance_df.empty:
+                # 3. Generate a clean interactive Plotly horizontal bar chart
+                # Used 'Viridis' color scale to match your original Seaborn palette choice
+                fig_shap = px.bar(
+                    importance_df.head(15), 
+                    x="SHAP Importance", 
+                    y="Feature", 
+                    orientation="h",
+                    color="SHAP Importance", 
+                    color_continuous_scale="agsunset", 
+                    text_auto=".3f",
+                    title="Top 15 Features Driving Model Decisions"
+                )
+                
+                # 4. Match layout dimensions and margins exactly with Tab 4 for strict visual consistency
+                fig_shap.update_layout(
+                    height=450, 
+                    yaxis={'categoryorder': 'total ascending'}, 
+                    coloraxis_showscale=False, 
+                    margin=dict(l=150, r=40, t=50, b=40) # Slightly larger top margin (t=50) to accommodate the title
+                )
+                
+                # 5. Render the Plotly chart inside your Streamlit container
+                st.plotly_chart(fig_shap, use_container_width=True, key="shap_importance_plot")
+            else:
+                st.info("SHAP importance metrics are unavailable for this model pipeline configuration.")
 
 
     # =========================================================
