@@ -9,10 +9,6 @@ from src.preprocessor import load_prediction_pipeline
 from frontend.page_2.views.dashboard_view import render_dashboard_page
 from frontend.page_2.views.landing_view import render_landing_page
 
-# Bind module tracking dependencies safely before joblib executes
-import __main__
-from src.binary_map import to_binary_map
-__main__.to_binary_map = to_binary_map
 
 # Ensure foundational application session state keys are available globally
 if "dataset_approved" not in st.session_state:
