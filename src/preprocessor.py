@@ -12,9 +12,6 @@ def preprocess_data(X):
     if 'SeniorCitizen' in X_clean.columns:
         X_clean['SeniorCitizen'] = pd.to_numeric(X_clean['SeniorCitizen'], errors='raise')
         
-    if 'gender' in X_clean.columns:
-        X_clean['gender'] = X_clean['gender'].map({'Male': 1, 'Female': 0})
-        
     return X_clean
 
 def preprocess_target(df, target_col="Churn"):
