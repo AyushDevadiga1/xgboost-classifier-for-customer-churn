@@ -26,9 +26,9 @@ def render_landing_page():
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader(" Get Template")
+        st.subheader("Get Template")
         st.download_button(
-            label="⬇ Download Sample CSV",
+            label="Download Sample CSV",
             data=sample_data,
             file_name="telco_dataset_sample.csv",
             mime="text/csv",
@@ -62,7 +62,7 @@ def render_landing_page():
                 st.session_state.data_status = status
                 st.rerun()
             else:
-                st.warning(f"❌ Rejected: {message}")
+                st.warning(f"Rejected: {message}")
                 
         except Exception as e:
-            st.error(f"❌ Critical file reading error: {e}")
+            st.error(f"Critical file reading error: {e}")

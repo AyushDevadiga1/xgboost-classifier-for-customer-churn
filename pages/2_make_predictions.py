@@ -5,7 +5,7 @@ import pandas as pd
 from src.validator import validate_dataset
 from src.preprocessor import load_prediction_pipeline
 
-# 🚀 Your isolated view rendering engines
+# Isolated view rendering engines
 from frontend.page_2.views.dashboard_view import render_dashboard_page
 from frontend.page_2.views.landing_view import render_landing_page
 
@@ -43,10 +43,10 @@ def main():
         try:
             pipeline = load_prediction_pipeline()
         except Exception as e:
-            st.error(f"❌ Failed to load ML Pipeline: {e}")
+            st.error(f"Failed to load ML Pipeline: {e}")
             st.stop() # Halts app loop execution safely if model paths are corrupted
             
-        # 🚀 Pass the model down to let the decoupled layout handle tabs and inference
+        # Pass the model down to let the decoupled layout handle tabs and inference
         render_dashboard_page(pipeline)
 
 if __name__ == '__main__':

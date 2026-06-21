@@ -31,7 +31,7 @@ def main():
     except Exception as e : 
         print(f'The introduction-page was not found .\n Cause : {e}')
 
-    st.markdown("## 📊 Model Evaluation Dashboard")
+    st.markdown("## Model Evaluation Dashboard")
     st.write(
         "This section outlines the evaluation metrics for the trained XGBoost pipeline, "
         "assessing its predictive confidence, feature associations, and underlying feature impact thresholds."
@@ -54,7 +54,7 @@ def main():
             except Exception as e:
                 st.error(f"Error loading Confusion Matrix plot: {e}")
         else:
-            st.warning(f"⚠️ File not found at target directory path: `{PATH_CONF_ROC}`")
+            st.warning(f"File not found at target directory path: `{PATH_CONF_ROC}`")
         
         # Row 2: Graph Descriptions
         st.write("#### Visual Performance ")
@@ -87,7 +87,7 @@ def main():
         
         df_report = pd.DataFrame(report_data)
         st.dataframe(df_report, hide_index=True, use_container_width=True)
-        st.caption("💡 *Note: Class 1 (Churned) properties directly drive the focus of targeted marketing outreach.*")
+        st.caption("*Note: Class 1 (Churned) properties directly drive the focus of targeted marketing outreach.*")
 
 
     with tab2:
@@ -109,7 +109,7 @@ def main():
             except Exception as e:
                 st.error(f"Error loading Correlation Matrix plot: {e}")
         else:
-            st.warning(f"⚠️ File not found at target directory path: `{PATH_CORR_HEAT}`")
+            st.warning(f"File not found at target directory path: `{PATH_CORR_HEAT}`")
 
     with tab3:
         st.write("### XGBoost Weight Gain Rankings")
@@ -128,7 +128,7 @@ def main():
             except Exception as e:
                 st.error(f"Error loading Feature Importance plot: {e}")
         else:
-            st.warning(f"⚠️ File not found at target directory path: `{PATH_FEAT_IMPORTANCE}`")
+            st.warning(f"File not found at target directory path: `{PATH_FEAT_IMPORTANCE}`")
 
 
 if __name__ == '__main__':

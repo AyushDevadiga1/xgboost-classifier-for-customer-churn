@@ -3,15 +3,6 @@ import pandas as pd
 
 from src.preprocessor import preprocess_data
 
-# 1. Define your exact training pipeline feature output order
-PIPELINE_OUTPUT_FEATURES = [
-    "gender", "SeniorCitizen", "Partner", "Dependents", "tenure",
-    "PhoneService", "MultipleLines", "InternetService", "OnlineSecurity",
-    "OnlineBackup", "DeviceProtection", "TechSupport", "StreamingTV",
-    "StreamingMovies", "Contract", "PaperlessBilling", "PaymentMethod",
-    "MonthlyCharges", "TotalCharges"
-]
-
 def transform_full_features(pipeline_obj, X_raw):
     """
     Passes raw data through transformers, tracking and fixing column 

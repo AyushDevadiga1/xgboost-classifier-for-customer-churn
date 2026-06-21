@@ -29,7 +29,7 @@ def main():
     st.sidebar.markdown("## Quick Guide ")
 
     st.sidebar.markdown(
-        "🚦 **Where to navigate:**\n\n"
+        "**Where to navigate:**\n\n"
         "• :green[**app**] — Introduction to churning and XGBoost Classifier.\n\n"
         "• :orange[**model info**] — Information about how model was trained and it's performance.\n\n"
         "• :red[**make predictions**] — Make predictions with your custom dataset in this tab."

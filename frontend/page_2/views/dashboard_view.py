@@ -18,7 +18,7 @@ def render_dashboard_page(pipeline):
     status = st.session_state.data_status
     
     # Sidebar resetting infrastructure
-    if st.sidebar.button("🔄 Upload Different Dataset"):
+    if st.sidebar.button("Upload Different Dataset"):
         st.session_state.dataset_approved = False
         st.session_state.processed_data = None
         st.session_state.data_status = None
@@ -27,7 +27,7 @@ def render_dashboard_page(pipeline):
     st.sidebar.success(" Active Session: Validated Schema")
     st.sidebar.metric(label="Total Records Loaded", value=len(df))
 
-    with st.sidebar.expander("⚠️ Data Processing Notice", expanded=False):
+    with st.sidebar.expander("Data Processing Notice", expanded=False):
             st.markdown(
                 "**Why did my row count decrease?**\n\n"
                 "The pipeline automatically strips out records where `TotalCharges` contains "
@@ -40,12 +40,12 @@ def render_dashboard_page(pipeline):
     
     if has_target:
         st.sidebar.info("Detected Mode: **Training/Evaluation**")
-        st.header(" Evaluation & Inference Workspace")
+        st.header("Evaluation & Inference Workspace")
         X_raw = df.drop(columns=["Churn"])
         y = preprocess_target(df, target_col="Churn")
     else:
         st.sidebar.info("Detected Mode: **Bulk Inference Pipeline**")
-        st.header("🔮 Automated Inference Pipeline")
+        st.header("Automated Inference Pipeline")
         X_raw = df.copy()
         y = None
 
@@ -59,11 +59,11 @@ def render_dashboard_page(pipeline):
     # ROW 1: PERFORMANCE INDICATORS (DYNAMIC FALLBACK)
     # =========================================================
     if has_target:
-        st.markdown("### 📈 Model Performance Indicators")
+        st.markdown("### Model Performance Indicators")
         tab1, tab2, tab3 = st.tabs([
-            "📋 Classification Report", 
-            "🗺️ Confusion Matrix Heatmap", 
-            "🎯 Prediction Confidence Distribution"
+            "Classification Report", 
+            "Confusion Matrix Heatmap", 
+            "Prediction Confidence Distribution"
         ])
         
         with tab1:
@@ -89,7 +89,7 @@ def render_dashboard_page(pipeline):
             fig_prob.update_layout(margin=dict(l=40, r=40, t=40, b=40), height=450, xaxis_title="Predicted Probability Score", yaxis_title="Customer Segment Count")
             st.plotly_chart(fig_prob, use_container_width=True, key="eval_confidence")
     else:
-        st.markdown("### 🎯 Pipeline Prediction Distribution")
+        st.markdown("### Pipeline Prediction Distribution")
         prob_df = pd.DataFrame({"Probability": probabilities})
         fig_prob = px.histogram(prob_df, x="Probability", nbins=30, color_discrete_sequence=["#2ca02c"])
         fig_prob.update_layout(height=350, xaxis_title="Predicted Churn Probability Score", yaxis_title="Total Inference Count")
@@ -99,13 +99,13 @@ def render_dashboard_page(pipeline):
     # ROW 2: EXPLAINABLE AI & RISK DRIVER ANALYSIS
     # =========================================================
     st.write("")
-    st.markdown("### 🔍 Explainable AI & Risk Factor Analysis")
+    st.markdown("### Explainable AI & Risk Factor Analysis")
     
     # Conditional tab unpacking strips out line charts if ground-truth targets do not exist
     if has_target:
-        tab4, tab5, tab6 = st.tabs(["🔑 Global Feature Importance", "📉 Churn Risk vs Tenure", "📊 SHAP Values"])
+        tab4, tab5, tab6 = st.tabs(["Global Feature Importance", "Churn Risk vs Tenure", "SHAP Values"])
     else:
-        tab4, = st.tabs(["🔑 Global Feature Importance"])
+        tab4, = st.tabs(["Global Feature Importance"])
 
     with tab4:
         feat_df = extract_feature_importance(pipeline, X_pipeline_fully_encoded.columns)
@@ -173,16 +173,16 @@ def render_dashboard_page(pipeline):
     
     with d_col1:
         if has_target:
-            st.markdown("#### 🔍 Comparision of Ground Truth and Predictions")
+            st.markdown("#### Comparison of Ground Truth and Predictions")
             comparison_view = pd.DataFrame({"Actual Churn (y)": y, "Predicted Churn (ŷ)": predictions}, index=df.index)
             st.dataframe(comparison_view, use_container_width=True)
         else:
-            st.markdown("#### 📋 Generated Output Head-Slice")
+            st.markdown("#### Generated Output Head-Slice")
             comparison_view = pd.DataFrame({"Predicted Churn (ŷ)": predictions, "Churn Probability": probabilities}, index=df.index)
             st.dataframe(comparison_view, use_container_width=True)
             
     with d_col2:
-        st.markdown("#### 📥 Export Workspace Outputs")
+        st.markdown("#### Export Workspace Outputs")
         
         # 2. Wrap the download workflow inside a clean, padded visual container card
         with st.container(border=True):
@@ -209,7 +209,7 @@ def render_dashboard_page(pipeline):
             
             # 3. Deploy a high-utility primary download button
             st.download_button(
-                label="📥 Download Completed Results CSV", 
+                label="Download Completed Results CSV", 
                 data=csv_data, 
                 file_name="telco_predictions_compiled.csv", 
                 mime="text/csv", 
@@ -221,11 +221,11 @@ def render_dashboard_page(pipeline):
     # ROW 4: DATASTATE STATE ARCHITECTURE
     # =========================================================
     st.write("---")
-    st.markdown("### ⛓️ Pipeline Transformation on Features")
+    st.markdown("### Pipeline Transformation on Features")
     state_col1, state_col2 = st.columns(2)
     with state_col1:
-        st.markdown("#### 🟥 $X$ : Raw Strings")
+        st.markdown("#### $X$ : Raw Strings")
         st.dataframe(X_raw.head(8), use_container_width=True)
     with state_col2:
-        st.markdown("#### 🟩 $X$ : Numeric Encodings")
+        st.markdown("#### $X$ : Numeric Encodings")
         st.dataframe(X_pipeline_fully_encoded.head(8), use_container_width=True)
