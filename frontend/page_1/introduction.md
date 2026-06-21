@@ -1,14 +1,17 @@
-# Extreme Gradient Boosting Classifier ( XGBOOST )
+# About the Model: XGBoost
 
-According to its official documentation and community definition, XGBoost (Extreme Gradient Boosting) is an open-source software library providing a highly optimized gradient boosting framework. Designed for speed, flexibility, and portability, it builds an ensemble of sequentially trained decision trees to solve classification, regression, and ranking problems. The algorithm is widely recognized for its "regularized boosting" formulation ($L_1$ and $L_2$ penalties) which actively limits model complexity to curb overfitting while maximizing computational efficiency across single systems and distributed execution environments.
+XGBoost (Extreme Gradient Boosting) is a widely used machine learning algorithm for structured, tabular data. It builds a sequence of decision trees, where each tree is trained to correct the mistakes of the ones before it. It includes built-in regularization to prevent overfitting and is one of the most reliable default choices for classification problems like this one.
 
-### About the Dataset
-The model is trained on the classic **Telco Customer Churn** dataset available on Kaggle, tracking profiles from 7,043 customers across 21 core features.The dataset tracks 7,043 records across 21 features. Here is the compressed data schema organized by feature type:
+---
 
-| Categorical / Object Data | Numerical Data | Target Variable |
+## About the Dataset
+
+The model is trained on the **Telco Customer Churn** dataset, a widely used benchmark dataset available on Kaggle. It contains 7,043 customer records across 21 original features.
+
+| Categorical Features | Numerical Features | Target |
 | :--- | :--- | :--- |
-| `customerID`, `gender`, `Partner`, `Dependents`, `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV`, `StreamingMovies`, `Contract`, `PaperlessBilling`, `PaymentMethod` | `SeniorCitizen` *(Binary)*, `tenure` *(Integer)*, `MonthlyCharges` *(Float)*, `TotalCharges` *(Float)* | `Churn` *(Binary)* |
+| `gender`, `Partner`, `Dependents`, `PhoneService`, `MultipleLines`, `InternetService`, `OnlineSecurity`, `OnlineBackup`, `DeviceProtection`, `TechSupport`, `StreamingTV`, `StreamingMovies`, `Contract`, `PaperlessBilling`, `PaymentMethod` | `SeniorCitizen`, `tenure`, `MonthlyCharges`, `TotalCharges` | `Churn` (Yes / No) |
 
-🔗 **Dataset Source:** [Kaggle Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
+**Source:** [Kaggle — Telco Customer Churn Dataset](https://www.kaggle.com/datasets/blastchar/telco-customer-churn)
 
 ---
