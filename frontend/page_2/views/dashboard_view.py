@@ -1,13 +1,16 @@
 import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
 import pandas as pd
 import plotly.express as px
 from sklearn.metrics import classification_report, confusion_matrix
 
 # Shared preprocessing and parsing helper utilities
-from src.preprocessor import preprocess_data, preprocess_target, generate_predictions
+from src.preprocessor import preprocess_data, preprocess_target, generate_predictions ,load_prediction_pipeline
 from utils.feature_importance import extract_feature_importance
 from utils.feature_transformer import transform_full_features
 from utils.predict_proba import generate_prediction_probabilities
+from utils.explainability import get_shap_importance_df
 
 def render_dashboard_page(pipeline):
     """Renders a fully interactive workspace that seamlessly switches depending on y-label presence."""
@@ -100,7 +103,7 @@ def render_dashboard_page(pipeline):
     
     # Conditional tab unpacking strips out line charts if ground-truth targets do not exist
     if has_target:
-        tab4, tab5, tab6 = st.tabs(["🔑 Global Feature Importance", "📉 Churn Risk vs Tenure", "💲 Churn Risk vs Monthly Charges"])
+        tab4, tab5, tab6 = st.tabs(["🔑 Global Feature Importance", "📉 Churn Risk vs Tenure", "📊 SHAP Values"])
     else:
         tab4, = st.tabs(["🔑 Global Feature Importance"])
 
@@ -124,12 +127,37 @@ def render_dashboard_page(pipeline):
             st.plotly_chart(fig_tn, use_container_width=True, key="tenure_trend")
             
         with tab6:
-            trend_mc = pd.DataFrame({"MonthlyCharges": X_raw["MonthlyCharges"], "Actual": y, "Predicted": predictions})
-            trend_mc["Charges Bin"] = pd.qcut(trend_mc["MonthlyCharges"], q=10, duplicates="drop").astype(str)
-            grouped_mc = trend_mc.groupby("Charges Bin")[["Actual", "Predicted"]].mean().reset_index()
-            fig_mc = px.bar(grouped_mc, x="Charges Bin", y=["Actual", "Predicted"], barmode="group", color_discrete_sequence=["#1f77b4", "#ff7f0e"])
-            fig_mc.update_layout(height=450, yaxis_tickformat=".0%", margin=dict(l=40, r=40, t=40, b=40))
-            st.plotly_chart(fig_mc, use_container_width=True, key="charges_trend")
+            st.subheader("Global Feature Importance (SHAP)")
+            
+            # 1. Fetch your cached machine learning pipeline
+            pipeline = load_prediction_pipeline()
+            
+            # 2. Get the structured importance data cleanly using your renamed variable
+            with st.spinner("Analyzing feature contributions..."):
+                importance_df = get_shap_importance_df(pipeline, X_pipeline_fully_encoded)
+            
+            # 3. Apply Seaborn styling themes
+            sns.set_theme(style="whitegrid")
+            fig, ax = plt.subplots(figsize=(10, 6))
+            
+            # 4. Generate a clean horizontal Seaborn barplot
+            sns.barplot(
+                data=importance_df.head(15), # Limits display to top 15 features for readability
+                x="SHAP Importance",
+                y="Feature",
+                palette="viridis", # A beautiful modern gradient palette
+                ax=ax
+            )
+            
+            # Clean up labels and remove unnecessary borders
+            ax.set_title("Top 15 Features Driving Model Decisions", fontsize=14, pad=15)
+            ax.set_xlabel("Mean Absolute SHAP Value (Impact on Prediction)", fontsize=11)
+            ax.set_ylabel("")
+            sns.despine(left=True, bottom=True)
+            
+            # 5. Render the Seaborn chart inside your Streamlit container
+            st.pyplot(fig, clear_figure=True)
+
 
     # =========================================================
     # ROW 3: TARGET TRACKING & FILE COMPILATION LOGS
