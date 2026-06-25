@@ -1,12 +1,15 @@
+# Make sure to import these major dependencies
 streamlit
 pandas
 numpy
 scikit-learn
 xgboost
-lightgbm
-catboost
-shap
+shap # for shap values --> model evaluation.
 matplotlib
 seaborn
 plotly
 joblib
+
+# Can be avoided 
+lightgbm
+catboost
