@@ -13,7 +13,10 @@ from utils.predict_proba import generate_prediction_probabilities
 from utils.explainability import get_shap_importance_df
 
 def render_dashboard_page(pipeline):
-    """Renders a fully interactive workspace that seamlessly switches depending on y-label presence."""
+    """
+    Renders a fully interactive workspace that seamlessly switches depending on y-label presence.
+    The function is flexible to automatically detect whether user specified the y-column or not.
+    """
     df = st.session_state.processed_data
     status = st.session_state.data_status
     
