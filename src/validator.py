@@ -42,7 +42,7 @@ def validate_dataset(uploaded_df: pd.DataFrame) -> tuple[bool, str, str]:
     mandatory_cols = list(expected_features.keys())
     
     # ----------------------------------------------------
-    # STEP 1: Verify Columns & Ordering
+    # Verify Columns & Ordering
     # ----------------------------------------------------
     if len(uploaded_cols) < len(mandatory_cols):
         missing = set(mandatory_cols) - set(uploaded_cols)
@@ -59,7 +59,7 @@ def validate_dataset(uploaded_df: pd.DataFrame) -> tuple[bool, str, str]:
         return False, "INVALID", msg
 
     # ----------------------------------------------------
-    # STEP 2: Check & Coerce Data Types Flexibly
+    # Check & Coerce Data Types Flexibly
     # ----------------------------------------------------
     for col, expected_dtype in expected_features.items():
         actual_dtype = str(uploaded_df[col].dtype)
@@ -89,7 +89,7 @@ def validate_dataset(uploaded_df: pd.DataFrame) -> tuple[bool, str, str]:
             return False, "INVALID", f"Type mismatch in column '{col}': Expected '{expected_dtype}', found '{actual_dtype}'."
 
     # ----------------------------------------------------
-    # STEP 3: Check for Null Values & Empty Spaces
+    # Check for Null Values & Empty Spaces
     # ----------------------------------------------------
     for col in mandatory_cols:
         # Check for standard NaNs
@@ -115,12 +115,12 @@ def validate_dataset(uploaded_df: pd.DataFrame) -> tuple[bool, str, str]:
             return False, "INVALID", f"Column '{col}' contains {null_count} missing (NaN or empty) values. Please clean your dataset."
 
     # ----------------------------------------------------
-    # STEP 4: Automated Target (y) Detection
+    # Automated Target (y) Detection
     # ----------------------------------------------------
     if len(uploaded_cols) == len(mandatory_cols):
         return True, "X_ONLY", "Validated successfully! Dataset contains only features (X) for inference."
         
-    # FIX: Corrected Python list lookup logic (replaced dictionary syntax with -1 index matching)
+    # Corrected Python list lookup logic (replaced dictionary syntax with -1 index matching)
     elif len(uploaded_cols) == len(mandatory_cols) + 1 and uploaded_cols[-1] == target_col:
         actual_target_dtype = str(uploaded_df[target_col].dtype)
         
