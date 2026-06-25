@@ -17,6 +17,10 @@ if "dataset_approved" not in st.session_state:
     st.session_state.data_status = None
 
 def main():
+    """
+    Main function that make predictions from different core functions and helper functions
+    Lightweight and Decoupled in nature.
+    """
     st.set_page_config(
         page_title=" Customer Churn Prediction via XGBOOST",
         page_icon="🔮", 
@@ -33,7 +37,7 @@ def main():
     # ROUTE A: Dataset Not Uploaded/Approved -> Keep user on onboarding panel
     # -------------------------------------------------------------------------
     if not st.session_state.dataset_approved:
-        render_landing_page()
+        render_landing_page() 
 
     # -------------------------------------------------------------------------
     # ROUTE B: Dataset Processed Successfully -> Forward pipeline to dashboard
