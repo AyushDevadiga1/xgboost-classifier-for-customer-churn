@@ -3,6 +3,7 @@ import pandas as pd
 from pathlib import Path
 
 # File paths 
+BASE_PATH = "frontend/page_1"
 PATH_INTRO = "frontend/page_1/introduction.md"
 PATH_CONF_ROC = "frontend/page_1/conf-matrix-and-roc-curve.png"
 PATH_CORR_HEAT = "frontend/page_1/corr-matrix.png"
