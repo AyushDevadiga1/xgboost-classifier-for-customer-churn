@@ -1,13 +1,19 @@
 import streamlit as st
 import pandas as pd
 from src.validator import validate_dataset
+from pathlib import Path
 
-# Keep paths relative to the project root directory
-PATH_INTRO = "frontend/page_2/introduction.md"
-PATH_SAMPLE = "frontend/page_2/data-sample.csv"
+# Use Path so it can run on any system 
+BASE_PATH = Path("frontend/page_2/")
+PATH_INTRO =  BASE_PATH / "introduction.md"
+PATH_SAMPLE = BASE_PATH / "data-sample.csv"
+
 
 def render_landing_page():
-    """Handles home page asset delivery, user uploads, and template verification."""
+    """
+    Renders the Landing page assets by validating paths .
+    Also renders the metadata of trained_model.
+    """
     try:
         with open(PATH_INTRO, 'r', encoding='utf-8') as file:
             intro_markdown = file.read() 
@@ -25,6 +31,7 @@ def render_landing_page():
     # Double columns layout for template handling
     col1, col2 = st.columns(2)
 
+    # A a button that let's user download
     with col1:
         st.subheader("Get Template")
         st.download_button(
