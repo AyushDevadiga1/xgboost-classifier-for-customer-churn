@@ -28,10 +28,12 @@ def render_landing_page():
         st.error(f'The sample template data could not be loaded: {e}')
         sample_data = ""
 
-    # Double columns layout for template handling
+    # Double columns layout that contains two buttons
     col1, col2 = st.columns(2)
 
-    # A a button that let's user download
+    """
+    A column to download sample dataset for the user
+    """
     with col1:
         st.subheader("Get Template")
         st.download_button(
@@ -42,6 +44,9 @@ def render_landing_page():
             use_container_width=True
         )
 
+    """
+    A column that let's user upload it's own dataset - must match template.
+    """
     with col2:
         st.subheader(" Submit Data ")
         uploaded_file = st.file_uploader(
@@ -51,6 +56,9 @@ def render_landing_page():
             label_visibility="collapsed"
         )
 
+    """
+    Validate whether any file was uploaded or not
+    """    
     if uploaded_file is not None:
         try:
             user_df = pd.read_csv(uploaded_file)
@@ -63,7 +71,7 @@ def render_landing_page():
             is_valid, status, message = validate_dataset(user_df)
             
             if is_valid:
-                # Update global state flags
+                # Update global state flags 
                 st.session_state.dataset_approved = True
                 st.session_state.processed_data = user_df
                 st.session_state.data_status = status
