@@ -4,6 +4,10 @@ import streamlit as st
 PATH_INTRO = "frontend/main_page/introduction-page.md"
 
 def main():
+    """
+    Main gate for the complete streamlit application
+    Has 2 other pages which can be traversed using the sidebar guide
+    """
     st.set_page_config(
                         page_title=" Customer Churn Prediction via XGBOOST",
                         page_icon="🏢", 
@@ -27,7 +31,7 @@ def main():
 
 
     st.sidebar.markdown("## Quick Guide ")
-
+    "Guide To Traverse across pages "
     st.sidebar.markdown(
         "**Where to navigate:**\n\n"
         "• :green[**app**] — Introduction to churning and XGBoost Classifier.\n\n"
