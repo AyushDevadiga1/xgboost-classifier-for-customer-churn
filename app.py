@@ -28,10 +28,9 @@ def main():
     except Exception as e : 
         print(f'The introduction-page was not found .\n Cause : {e}')
 
-
+    st.info("*Note: Traverse other pages using the sidebar instructions.*")
 
     st.sidebar.markdown("## Quick Guide ")
-    "Guide To Traverse across pages "
     st.sidebar.markdown(
         "**Where to navigate:**\n\n"
         "• :green[**app**] — Introduction to churning and XGBoost Classifier.\n\n"
