@@ -12,7 +12,7 @@ PATH_FEAT_IMPORTANCE = "frontend/page_1/xgbc-feature-importance.png"
 def main():
 
     st.set_page_config(
-                        page_title=" Customer Churn Prediction via XGBOOST",
+                        page_title="Model Metadata",
                         page_icon="🏗", 
                         layout="wide", 
                         initial_sidebar_state="expanded",

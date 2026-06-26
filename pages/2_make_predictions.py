@@ -22,8 +22,8 @@ def main():
     Lightweight and Decoupled in nature.
     """
     st.set_page_config(
-        page_title=" Customer Churn Prediction via XGBOOST",
-        page_icon="🔮", 
+        page_title=" Prediction on Custom Dataset",
+        page_icon="✏", 
         layout="wide", 
         initial_sidebar_state="expanded",
         menu_items={
