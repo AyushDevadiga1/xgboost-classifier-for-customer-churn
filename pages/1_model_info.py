@@ -56,7 +56,7 @@ def main():
                 st.image(
                     PATH_CONF_ROC, 
                     caption="Confusion Matrix & Receiver Operating Characteristic (ROC) Layout", 
-                    use_container_width=True
+                   width="stretch"
                 )
             except Exception as e:
                 st.error(f"Error loading Confusion Matrix plot: {e}")
@@ -111,7 +111,7 @@ def main():
                 st.image(
                     PATH_CORR_HEAT, 
                     caption="Feature Correlation Heatmap Matrix", 
-                    use_container_width=True
+                   width="stretch"
                 )
             except Exception as e:
                 st.error(f"Error loading Correlation Matrix plot: {e}")
@@ -130,7 +130,7 @@ def main():
                 st.image(
                     PATH_FEAT_IMPORTANCE, 
                     caption="XGBoost Feature Significance Ranking Spectrum", 
-                    use_container_width=True
+                   width="stretch"
                 )
             except Exception as e:
                 st.error(f"Error loading Feature Importance plot: {e}")

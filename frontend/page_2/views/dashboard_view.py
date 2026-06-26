@@ -72,7 +72,7 @@ def render_dashboard_page(pipeline):
         with tab1:
             report_dict = classification_report(y, predictions, output_dict=True)
             rep_df = pd.DataFrame(report_dict).T
-            st.dataframe(rep_df.style.format(precision=2), use_container_width=True, height=212)
+            st.dataframe(rep_df.style.format(precision=2), width="stretch", height=212)
             
         with tab2:
             matrix_data = confusion_matrix(y, predictions)
@@ -81,7 +81,7 @@ def render_dashboard_page(pipeline):
                 text_auto=True, color_continuous_scale='Blues', aspect="auto"
             )
             fig_hm.update_layout(coloraxis_showscale=False, margin=dict(l=40, r=40, t=30, b=40), height=450)
-            st.plotly_chart(fig_hm, use_container_width=True, key="eval_heatmap")
+            st.plotly_chart(fig_hm, width="stretch", key="eval_heatmap")
             
         with tab3:
             prob_df = pd.DataFrame({"Probability": probabilities, "Actual Churn State": df["Churn"].to_numpy()})
@@ -90,13 +90,13 @@ def render_dashboard_page(pipeline):
                 barmode="overlay", marginal="box", color_discrete_sequence=["#197bc1", "#f18322"]
             )
             fig_prob.update_layout(margin=dict(l=40, r=40, t=40, b=40), height=450, xaxis_title="Predicted Probability Score", yaxis_title="Customer Segment Count")
-            st.plotly_chart(fig_prob, use_container_width=True, key="eval_confidence")
+            st.plotly_chart(fig_prob, width="stretch", key="eval_confidence")
     else:
         st.markdown("### Pipeline Prediction Distribution")
         prob_df = pd.DataFrame({"Probability": probabilities})
         fig_prob = px.histogram(prob_df, x="Probability", nbins=30, color_discrete_sequence=["#2ca02c"])
         fig_prob.update_layout(height=350, xaxis_title="Predicted Churn Probability Score", yaxis_title="Total Inference Count")
-        st.plotly_chart(fig_prob, use_container_width=True, key="inference_distribution")
+        st.plotly_chart(fig_prob, width="stretch", key="inference_distribution")
 
     # =========================================================
     # ROW 2: EXPLAINABLE AI & RISK DRIVER ANALYSIS
@@ -118,7 +118,7 @@ def render_dashboard_page(pipeline):
                 color="Importance", color_continuous_scale="blugrn", text_auto=".2f"
             )
             fig_feat.update_layout(height=450, yaxis={'categoryorder':'total ascending'}, coloraxis_showscale=False, margin=dict(l=150, r=40, t=30, b=40))
-            st.plotly_chart(fig_feat, use_container_width=True, key="feature_importance_plot")
+            st.plotly_chart(fig_feat, width="stretch", key="feature_importance_plot")
         else:
             st.info("Feature importance metrics are unavailable for this model pipeline configuration.")
             
@@ -128,7 +128,7 @@ def render_dashboard_page(pipeline):
             trend_tn = pd.DataFrame({"Tenure": X_raw["tenure"], "Actual": y, "Predicted": predictions}).groupby("Tenure").mean().reset_index()
             fig_tn = px.line(trend_tn, x="Tenure", y=["Actual", "Predicted"], color_discrete_sequence=["#1f77b4", "#ff7f0e"])
             fig_tn.update_layout(height=450, yaxis_tickformat=".0%", margin=dict(l=40, r=40, t=40, b=40))
-            st.plotly_chart(fig_tn, use_container_width=True, key="tenure_trend")
+            st.plotly_chart(fig_tn, width="stretch", key="tenure_trend")
             
         with tab6:
             st.subheader("Global Feature Importance (SHAP)")
@@ -163,7 +163,7 @@ def render_dashboard_page(pipeline):
                 )
                 
                 # 5. Render the Plotly chart inside your Streamlit container
-                st.plotly_chart(fig_shap, use_container_width=True, key="shap_importance_plot")
+                st.plotly_chart(fig_shap, width="stretch", key="shap_importance_plot")
             else:
                 st.info("SHAP importance metrics are unavailable for this model pipeline configuration.")
 
@@ -178,11 +178,11 @@ def render_dashboard_page(pipeline):
         if has_target:
             st.markdown("#### Comparison of Ground Truth and Predictions")
             comparison_view = pd.DataFrame({"Actual Churn (y)": y, "Predicted Churn (ŷ)": predictions}, index=df.index)
-            st.dataframe(comparison_view, use_container_width=True)
+            st.dataframe(comparison_view, width="stretch")
         else:
             st.markdown("#### Generated Output Head-Slice")
             comparison_view = pd.DataFrame({"Predicted Churn (ŷ)": predictions, "Churn Probability": probabilities}, index=df.index)
-            st.dataframe(comparison_view, use_container_width=True)
+            st.dataframe(comparison_view, width="stretch")
             
     with d_col2:
         st.markdown("#### Export Workspace Outputs")
@@ -216,7 +216,7 @@ def render_dashboard_page(pipeline):
                 data=csv_data, 
                 file_name="telco_predictions_compiled.csv", 
                 mime="text/csv", 
-                use_container_width=True,
+                width="stretch",
                 type="primary" # Uses your theme's bold primary action color!
             )
         
@@ -228,7 +228,7 @@ def render_dashboard_page(pipeline):
     state_col1, state_col2 = st.columns(2)
     with state_col1:
         st.markdown("#### $X$ : Raw Strings")
-        st.dataframe(X_raw.head(8), use_container_width=True)
+        st.dataframe(X_raw.head(8), width="stretch")
     with state_col2:
         st.markdown("#### $X$ : Numeric Encodings")
-        st.dataframe(X_pipeline_fully_encoded.head(8), use_container_width=True)
+        st.dataframe(X_pipeline_fully_encoded.head(8), width="stretch")
