@@ -22,7 +22,13 @@ def main():
                                         'About': None
                                     }
                     )
-    
+
+    st.sidebar.markdown(
+        "**Go Back To:**\n\n"
+        "• :gray[**app**] — Introduction to churning and XGBoost Classifier.\n\n"
+        "• :green[**model info**] — Information about how the model was trained and it's performance.\n\n"
+        "• :orange[**make predictions**] — Make predictions with your custom dataset in this tab."
+    )
     try :
         with open(PATH_INTRO , 'r' , encoding = 'utf-8') as file:
             intro_markdown = file.read() 
