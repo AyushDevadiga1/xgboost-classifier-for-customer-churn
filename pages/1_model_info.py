@@ -102,7 +102,7 @@ def main():
         st.write(
             "The heat matrix illustrates the co-dependency between feature matrices. "
             "This was the status of the model when all the features were encoded , causing interdependence."
-            "To reduce this the xgboost_pipeline uses several methods like Target encoding ,  OneHot Encoding with dropping" \
+            "To reduce this the xgboost_pipeline uses several methods like Target encoding ,  Ordinal Encoding with dropping" \
             " , dropping redundant columns and smart feature engineering ."
         )
         
