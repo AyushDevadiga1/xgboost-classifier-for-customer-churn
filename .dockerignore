@@ -1,0 +1,21 @@
+.venv
+.git
+.vscode
+__pycache__/
+*.pyc
+
+# Not needed by the API — only the Streamlit dashboard uses these
+app.py
+pages/
+frontend/
+src/
+utils/
+
+# 2.4MB of notebooks + CSVs that have no business in a prediction API image
+eda/
+graphs/
+samples/
+
+README.md
+plan
+references
