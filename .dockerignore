@@ -8,7 +8,6 @@ __pycache__/
 app.py
 pages/
 frontend/
-src/
 utils/
 
 # 2.4MB of notebooks + CSVs that have no business in a prediction API image

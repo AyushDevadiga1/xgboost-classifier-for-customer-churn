@@ -11,6 +11,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Only what the API actually needs — not the notebooks, not the Streamlit
 # app, not .venv. Keeps the image small and avoids shipping dev artifacts.
 COPY main.py .
+COPY src/ ./src/
 COPY models/ ./models/
 
 EXPOSE 8000
@@ -25,7 +26,3 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=10s \
 # a port mapping. This is the single most common "works locally, dead
 # in Docker" bug.
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
-
-# Commands to run after this  : 
-# docker build -t churn-api .
-# docker run -p 8000:8000 churn-api

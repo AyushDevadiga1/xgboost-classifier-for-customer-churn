@@ -1,3 +1,17 @@
+"""
+FastAPI wrapper around the existing customer-churn prediction pipeline.
+
+CONFIRMED (from models/xgboost_model.joblib + the training notebook):
+this is a single fitted sklearn Pipeline — a ColumnTransformer feeding an
+XGBClassifier. The ColumnTransformer does four things to the 20 raw
+columns: binary-maps 12 Yes/No-style columns, ordinal-encodes Contract,
+target-encodes InternetService/PaymentMethod, and DROPS customerID,
+MonthlyCharges, and TotalCharges. Because sklearn's ColumnTransformer
+validates that every referenced column exists at transform time — even
+ones mapped to 'drop' — all three of those still have to be present in
+the request payload, or `.predict()` raises a KeyError.
+"""
+
 from contextlib import asynccontextmanager
 from typing import Literal
 
@@ -5,6 +19,12 @@ import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
+
+# Looks unused — it isn't. The pickled pipeline stores a reference to
+# to_binary_map by module path (src.binary_map), not its actual code.
+# joblib.load() re-imports it at load time; without this package present
+# and importable, loading the model raises ModuleNotFoundError.
+import src.binary_map  # noqa: F401
 
 MODEL_PATH = "models/xgboost_model.joblib"
 
