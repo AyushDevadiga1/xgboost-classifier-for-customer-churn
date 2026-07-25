@@ -15,6 +15,7 @@ A production-style machine learning application that predicts telecom customer c
 - [Model Details](#model-details)
 - [Results](#results)
 - [Running Locally](#running-locally)
+- [Production Deployment (AWS)](#production-deployment-aws)
 - [Key Engineering Decisions](#key-engineering-decisions)
 - [Limitations](#limitations)
 
@@ -174,7 +175,11 @@ xgbc-customer-churn/
 ├── models/
 │   └── xgboost_model.joblib        # Trained, tuned pipeline (preprocessor + model)
 ├── graphs/                         # Saved evaluation plots used in Page 1
-└── requirements.txt
+├── requirements.txt
+├── main.py                         # FastAPI wrapper — production REST API path
+├── Dockerfile                      # Container build for the FastAPI service
+├── .dockerignore
+└── DEPLOYMENT.md                   # AWS deployment walkthrough (FastAPI + Docker + EC2)
 ```
 
 ---
@@ -256,6 +261,14 @@ python -m venv .venv
 pip install -r requirements.txt
 streamlit run app.py
 ```
+
+---
+
+## Production Deployment (AWS)
+
+Alongside the Streamlit demo above, this project also ships as a containerized REST API: the same trained pipeline (`models/xgboost_model.joblib`), wrapped in FastAPI, Dockerized, and deployed on AWS (ECR + EC2) — a production-shaped serving path rather than an interactive dashboard.
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for the full architecture, the engineering decisions behind it, and a real debugging story (a pickling gotcha that only surfaces once the model leaves its original repo).
 
 ---
 
