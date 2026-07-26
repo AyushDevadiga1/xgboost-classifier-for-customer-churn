@@ -12,6 +12,7 @@ This document covers the second deployment path for this project: a containerize
 - [Containerizing with Docker](#containerizing-with-docker)
 - [Pushing to Amazon ECR](#pushing-to-amazon-ecr)
 - [Running on EC2](#running-on-ec2)
+- [Production Hardening](#production-hardening)
 - [Testing the Deployment](#testing-the-deployment)
 - [Key Engineering Decisions](#key-engineering-decisions)
 - [Cost Awareness](#cost-awareness)
@@ -67,10 +68,24 @@ Client --> POST /predict (raw customer JSON)
 2. Security group allows inbound `22` (SSH, restricted to a specific IP) and `8000` (the API port, open for testing).
 3. Docker is installed via `dnf`, the image is pulled from ECR, and run with `-d --restart unless-stopped` so it survives both SSH disconnects and instance reboots.
 
+## Production Hardening
+
+Three additions on top of the initial working deployment:
+
+**Structured logging** — every request is logged (method, path, status code, duration), and every prediction logs the customer ID, the resulting label, and probability. Errors during prediction are logged with a full stack trace instead of failing silently. Logs go to stdout, which Docker/CloudWatch capture automatically — nothing is written to a file inside the container, since container filesystems are ephemeral.
+
+**API key authentication** — `/predict` now requires an `X-API-Key` header matching an `API_KEY` environment variable set at container runtime (`docker run -e API_KEY=...`), never baked into the image. `/health` stays open intentionally, so load balancers and uptime checks can poll it without a key.
+
+**Tests + CI/CD** — `tests/test_main.py` covers the basics: health check, missing/wrong API key rejected, a valid prediction returns a sane shape, and malformed input is rejected with a 422. `.github/workflows/ci-cd.yml` runs these tests on every push to `main` that touches the API, and only builds + pushes a new image to ECR if they pass. It intentionally stops at ECR — auto-redeploying onto EC2 would mean storing an SSH key as a GitHub secret, which is a deliberate future decision, not a default.
+
 ## Testing the Deployment
 
 ```bash
 curl http://<ec2-public-ip>:8000/health
+curl -X POST http://<ec2-public-ip>:8000/predict \
+  -H "X-API-Key: <your-api-key>" \
+  -H "Content-Type: application/json" \
+  -d '{"customerID": "0000-TEST", ...}'
 ```
 
 or open `http://<ec2-public-ip>:8000/docs` for the interactive Swagger UI and send a real prediction request.
