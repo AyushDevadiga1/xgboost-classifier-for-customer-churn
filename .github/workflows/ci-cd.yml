@@ -29,7 +29,7 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest -v
+        run: PYTHONPATH=. pytest -v
 
   build-and-push:
     needs: test # only runs if the test job above passes
