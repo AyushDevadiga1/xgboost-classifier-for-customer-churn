@@ -1,0 +1,68 @@
+name: CI/CD - Test, Build, Push to ECR
+
+# Only runs when something relevant to the API/deployment actually changes —
+# not on every Streamlit/notebook edit.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "main.py"
+      - "src/**"
+      - "models/**"
+      - "tests/**"
+      - "requirements.txt"
+      - "Dockerfile"
+      - ".github/workflows/ci-cd.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run tests
+        run: pytest -v
+
+  build-and-push:
+    needs: test # only runs if the test job above passes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Log in to Amazon ECR
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push image
+        env:
+          ECR_REGISTRY: ${{ steps.ecr-login.outputs.registry }}
+          ECR_REPOSITORY: churn-api
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+# NOTE: this pipeline stops at "image is in ECR." It deliberately does NOT
+# SSH into EC2 and restart the container automatically — that requires
+# storing an SSH private key as a repo secret, which is a real extra
+# security surface worth a deliberate decision, not a default. For now,
+# redeploying on EC2 after a push is a manual:
+#   docker pull <registry>/churn-api:latest
+#   docker stop <old-container-id> && docker rm <old-container-id>
+#   docker run -d -p 8000:8000 --restart unless-stopped -e API_KEY=... <registry>/churn-api:latest
