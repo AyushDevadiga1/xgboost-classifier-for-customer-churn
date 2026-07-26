@@ -14,3 +14,7 @@ joblib
 fastapi
 uvicorn[standard]
 pydantic
+
+# Testing (used by tests/ and the CI/CD pipeline)
+pytest
+httpx
