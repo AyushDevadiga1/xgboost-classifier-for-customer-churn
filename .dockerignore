@@ -1,4 +1,5 @@
 .venv
+.env
 .git
 .vscode
 __pycache__/
@@ -18,3 +19,4 @@ samples/
 README.md
 plan
 references
+keys/
