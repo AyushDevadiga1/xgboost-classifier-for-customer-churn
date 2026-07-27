@@ -78,6 +78,8 @@ Three additions on top of the initial working deployment:
 
 **Tests + CI/CD** — `tests/test_main.py` covers the basics: health check, missing/wrong API key rejected, a valid prediction returns a sane shape, and malformed input is rejected with a 422. `.github/workflows/ci-cd.yml` runs these tests on every push to `main` that touches the API, and only builds + pushes a new image to ECR if they pass. It intentionally stops at ECR — auto-redeploying onto EC2 would mean storing an SSH key as a GitHub secret, which is a deliberate future decision, not a default.
 
+Another real gotcha found here: the tests passed locally with `python -m pytest`, then failed in CI with `ModuleNotFoundError: No module named 'main'` running the exact same command as plain `pytest`. `python -m pytest` adds the current directory to Python's import path automatically; a bare `pytest` invocation doesn't, and relies on its own rootdir-insertion logic instead, which doesn't reach the repo root here. Fixed with `PYTHONPATH=. pytest -v` in the workflow.
+
 ## Testing the Deployment
 
 ```bash
